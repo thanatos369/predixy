@@ -1,27 +1,24 @@
+name: Sync main with upstream latest
 on:
   schedule:
-    - cron:  '0 7 * * 1,4'
-    # scheduled at 07:00 every Monday and Thursday
-  workflow_dispatch:
-
+    - cron:  '01 03 * * *'
 jobs:
-  sync_with_upstream:
+  merge:
     runs-on: ubuntu-latest
-    name: Sync master with upstream latest
-
     steps:
-    - name: Checkout master
-      uses: actions/checkout@v2
-      with:
-        ref: master
-        
-    - name: Pull upstream changes
-      id: sync
-      uses: aormsby/Fork-Sync-With-Upstream-action@v2.2
-      with:
-        upstream_repository: panr/hugo-theme-hello-friend
-        upstream_branch: master
-        target_branch: master
+      - uses: actions/checkout@v2
+      - name: Merge upstream
+        run: |
+          #git config --global user.name 'your-name'
+          #git config --global user.email 'your-username@users.noreply.github.com'
 
-    - name: Timestamp
-      run: date
+          # "git checkout master" is unnecessary, already here by default
+          #git pull --unshallow  # this option is very important, you would get
+                                # complains about unrelated histories without it.
+                                # (but actions/checkout@v2 can also be instructed
+                                # to fetch all git depth right from the start)
+
+          #git remote add upstream https://github.com/example/test.git
+          git fetch upstream
+
+
