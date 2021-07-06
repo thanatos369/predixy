@@ -2,6 +2,7 @@ name: Sync main with upstream latest
 on:
   schedule:
     - cron:  '01 03 * * *'
+  workflow_dispatch:
 jobs:
   merge:
     runs-on: ubuntu-latest
